@@ -73,7 +73,7 @@ callState = CallState.IDLE
 
 # Logging callback
 def log_cb(level, msg, msg_len):
-    print '[%s] %s' % (time.ctime(), msg),
+    print ('[%s] %s' % (time.ctime(), msg)),
 
 def _start_call_sound_out():
     global player_out_id,input_volume, output_volume, voip_root_dir
@@ -215,7 +215,7 @@ class VoipBackend:
               
                 self.notification_cb(VoipEventType.BUDDY_EVENT,VoipEvent.BUDDY_SUBSCRIBED, {'success': True, 'buddy' : VoipBackend.SipBuddy(buddy)})
                 #self.sip_controller.change_state(SipControllerState.Remote_user_subscribed, buddy_extension)
-            except pj.Error, e:
+            except (pj.Error, e):
                 logger.exception( "ADDING REMOTE USER FAILED: Exception: " + str(e))
                 #self.sip_controller.do_fsm(SipControllerState.Remote_user_subscribing_failed,buddy_extension)
                 self.notification_cb(VoipEventType.BUDDY_EVENT,VoipEvent.BUDDY_SUBSCRIPTION_FAILED, {'success': False, 'buddy': VoipBackend.SipBuddy(buddy), 'error' :str(e)})
@@ -524,7 +524,7 @@ class VoipBackend:
 
         
         def on_incoming_subscribe(self, my_buddy, from_uri, contact_uri, pres_obj):
-            print '\n\nrichiamato on subscribe del buddy:%s da %s a %s ' % (my_buddy, from_uri, contact_uri)
+            print ('\n\nrichiamato on subscribe del buddy:%s da %s a %s ' % (my_buddy, from_uri, contact_uri))
 
             return (200,None)
   
@@ -670,7 +670,7 @@ class VoipBackend:
             self.lib.set_snd_dev(input_device, output_device)
             self.input_dev_list_index =  list_index_in
             self.output_dev_list_index =  list_index_out
-        except Exception , ex:
+        except (Exception , ex):
             logger.debug( "Eccezione:%s" % str(ex))
 
     def set_call_preferences(self, auto_answering, auto_answering_delay):
@@ -679,7 +679,7 @@ class VoipBackend:
         try:
             auto_answer = auto_answering
             auto_answer_delay = auto_answering_delay
-        except Exception , ex:
+        except (Exception , ex):
             logger.error( "Exception:%s" % str(ex))
 
 
@@ -758,7 +758,7 @@ class VoipBackend:
                     #acc.delete()
                     #acc = None
                     return True
-            except Exception,ex:
+            except (Exception,ex):
                 logger.exception("Unexpected exception during user unregistration, maybe because the sip server is offline:%s" % ex)
                 self.notification_cb(VoipEventType.ACCOUNT_EVENT,VoipEvent.ACCOUNT_UNREGISTERED, {'Success' : False, 'account_info' : self.my_account[0]})
                 return False
@@ -848,7 +848,7 @@ class VoipBackend:
             
             logger.debug( "library destroyed")
             
-        except Exception, e:
+        except (Exception, e):
             logger.exception( 'Exception during shutting down:%s' % e)
             self.notification_cb(VoipEventType.LIB_EVENT,VoipEvent.LIB_DEINITIALIZATION_FAILED, {'Success' : False, 'account_info' : self.my_account[0], 'reason': str(e)})
             return False
@@ -949,7 +949,7 @@ class VoipBackend:
 
             logger.debug('SIP successfully initialized!')
             return True
-        except pj.Error, e:
+        except (pj.Error, e):
             self.notification_cb(VoipEventType.LIB_EVENT,VoipEvent.LIB_INITIALIZATION_FAILED, {'success': False, 'sip_server' :self.sip_server ,'error' :str(e)})
             logger.exception( "SIP INITIALIZATION FAILED: Exception: " + str(e))
             if self.lib!=None:
@@ -1006,7 +1006,7 @@ class VoipBackend:
             return True
 
             
-        except pj.Error, e:
+        except (pj.Error, e):
             logger.exception("Exception registering account:%s" % str(e))
             self.lib.destroy_lib()
             self.lib = None
@@ -1100,7 +1100,7 @@ class VoipBackend:
             return True
            
 
-        except pj.Error, e:
+        except (pj.Error, e):
             logger.exception( ">>>> Exception in make_call: %s" % str(e))
             return False
         
@@ -1122,10 +1122,10 @@ class VoipBackend:
             else:
                 logger.debug( 'Call On line: answer call ignored')
                 
-        except Exception, ex:
+        except (Exception, ex):
             logger.exception( 'Exception in answer call:%s' % ex)
             
-        except pj.Error,er:
+        except (pj.Error,er):
             logger.exception("Pjsip Error in answer call:%s" % er) 
             return
             
@@ -1151,11 +1151,11 @@ class VoipBackend:
                 #self.messenger.send_info("No Call to hangup!")
                 return False
 
-        except Exception,ex:
+        except (Exception,ex):
             logger.exception("Exception in hangup call:%s" % ex) 
             return False
         
-        except pj.Error,er:
+        except (pj.Error,er):
             logger.exception("Pjsip Error in hangup call:%s" % er) 
             return False
 
@@ -1173,10 +1173,10 @@ class VoipBackend:
                 logger.debug( "There is no call to hold")
                 #self.messenger.send_info("No Call to hungup!")
                 return False
-        except Exception,ex:
+        except (Exception,ex):
             logger.exception("Exception in hold_call:%s" % ex)
             return False
-        except pj.Error,er:
+        except (pj.Error,er):
             logger.exception("Pjsip Error in hold call:%s" % er) 
             return False
 
@@ -1192,10 +1192,10 @@ class VoipBackend:
                 logger.debug( "There is no call to unhold")
                 #self.messenger.send_info("No Call to hungup!")
                 return False
-        except Exception,ex:
+        except (Exception,ex):
             logger.exception( "Exception in unhold_call:%s" % ex)
             return False
-        except pj.Error,er:
+        except (pj.Error,er):
             logger.exception("Pjsip Error in unhold call:%s" % er) 
             return False
 
