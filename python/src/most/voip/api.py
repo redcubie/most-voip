@@ -30,7 +30,7 @@ class VoipLib:
         
         """
         if backend==None:
-            from api_backend import VoipBackend
+            from .api_backend import VoipBackend
             self.backend = VoipBackend()
         else:
             self.backend = backend()
